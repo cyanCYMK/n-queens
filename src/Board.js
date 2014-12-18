@@ -153,10 +153,10 @@
       var diagArray = [];
       var count = 0;
 
+      var j = diagIndex;
       for ( var i = 0; i < size - diagIndex; i++ ){
-        for ( var j = diagIndex; j < (size - diagIndex); j++ ){
           diagArray.push(this.get(i)[j]);
-        }
+          j++;
       }
 
       for( var i = 0; i < diagArray.length; i++ ){
@@ -172,7 +172,6 @@
     hasAnyMajorDiagonalConflicts: function() {
       var size = this.get('n');
 
-      debugger;
       // Run through each possible Major Diagonal starting at index 0
       for( var i = 0; i < size; i++ ){
         if( this.hasMajorDiagonalConflictAt(i) ){
@@ -190,12 +189,39 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var size = this.get('n');
+      var diagIndex = minorDiagonalColumnIndexAtFirstRow;
+      var diagArray = [];
+      var count = 0;
+
+      var j = diagIndex;
+      for ( var i = 0; i < diagIndex + 1; i++ ){
+          diagArray.push(this.get(i)[j]);
+          j--;
+      }
+
+      for( var i = 0; i < diagArray.length; i++ ){
+        if( diagArray[i] !== 0 ){
+          count++;
+        }
+      }
+
+      return count > 1;
+
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var size = this.get('n');
+
+      // Run through each possible Minor Diagonal starting at index 0
+      for( var i = 0; i < size; i++ ){
+        if( this.hasMinorDiagonalConflictAt(i) ){
+          return true;
+        }
+      }
+
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
