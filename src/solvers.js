@@ -17,26 +17,28 @@ window.findNRooksSolution = function(n) {
   var solution = [];
   var board = new Board({'n': n});
   var rowIndex = 0;
-  // Define the recursive function
+  var size = n;
 
+  // Define the recursive function
   var assignRook = function(n, rowIndex){
     if( n === 0 ){
       return;
     }
     var row = board.get(rowIndex);
-    console.log(row);
-    for( var i = 0; i < n; i++ ){
-      if( row[i] === 0 ){
 
-        row[i] = 1;
-        // check for row & column
-        if ( !board.hasAnyRowConflicts && !board.hasAnyColConflicts ){
-          // recursively call assignRook with n-- and rowIndex++
-          assignRook(n--, rowIndex++);/
-        }
-        return;
+    for( var col = 0; col < size; col++ ){
+      row[col] = 1;
+      // Check for row & column
+      if ( !board.hasAnyRowConflicts() && !board.hasAnyColConflicts() ){
+        n--;
+        rowIndex++;
+
+        // recursively call assignRook with n-- and rowIndex++
+        assignRook(n, rowIndex);
       }
-
+      if( board.hasAnyRowConflicts() || board.hasAnyColConflicts() ){
+        row[col] = 0;
+      }
     }
     // recurse on row++, n--
     solution.push(row);
@@ -45,9 +47,10 @@ window.findNRooksSolution = function(n) {
   // Loop through the possible position next rook
   // Call the recursive function with n - 1
   // If n === 0 return solution
-  debugger;
+
   assignRook(n, rowIndex);
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  console.log(solution);
   return solution;
 };
 
@@ -55,7 +58,31 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var size = n;
+  var board = new Board({'n': n});
+
+  // Pass in as argument the board
+  // create a for loop to check recursively each individual row
+
+
+  var findSolutions = function(n, rowIndex){
+    // for loop iterating over all columsn in row 0
+      // if rowIndex > n
+        // solutionCount++;
+        // break;
+
+      // get rowIndex row of board
+      // do for loop over row with i
+        // set rook on i
+        // check for conflicts
+          // if conflict, then rowIndex++
+          // if no conflict, recurse
+    //}
+  };
+
+  // for loop iterating over all columns in row 0
+    // do findSolutions
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
