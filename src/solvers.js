@@ -14,8 +14,33 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = [];
+  var board = new Board({'n': n});
+  var rowIndex = 0;
+  // Define the recursive function
 
+  var assignRook = function(n, rowIndex){
+    if( n === 0 ){
+      return;
+    }
+    var row = board.get(rowIndex);
+    console.log(row);
+    for( var i = 0; i < n; i++ ){
+      if( row[i] === 0 ){
+        row[i] = 1;
+        return;
+      }
+    }
+    // recurse on row++, n--
+    solution.push(row);
+    assignRook(n--, rowIndex++);
+  };
+  // Assign the first position to the rook
+  // Loop through the possible position next rook
+  // Call the recursive function with n - 1
+  // If n === 0 return solution
+  debugger;
+  assignRook(n, rowIndex);
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
