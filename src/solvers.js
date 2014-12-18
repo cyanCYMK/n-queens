@@ -62,6 +62,10 @@ window.countNRooksSolutions = function(n) {
   var size = n;
   var board = new Board({'n': n});
 
+  // First change findNRootSolution to provide arrays of possibilities
+  // Call findNRootSolution here
+  // Increment solutionCount at each call
+
   // Pass in as argument the board
   // create a for loop to check recursively each individual row
 
