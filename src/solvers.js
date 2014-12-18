@@ -27,13 +27,19 @@ window.findNRooksSolution = function(n) {
     console.log(row);
     for( var i = 0; i < n; i++ ){
       if( row[i] === 0 ){
+
         row[i] = 1;
+        // check for row & column
+        if ( !board.hasAnyRowConflicts && !board.hasAnyColConflicts ){
+          // recursively call assignRook with n-- and rowIndex++
+          assignRook(n--, rowIndex++);/
+        }
         return;
       }
+
     }
     // recurse on row++, n--
     solution.push(row);
-    assignRook(n--, rowIndex++);
   };
   // Assign the first position to the rook
   // Loop through the possible position next rook
