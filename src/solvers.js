@@ -50,7 +50,6 @@ window.findNRooksSolution = function(n) {
 
   assignRook(n, rowIndex);
   //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  console.log(solution);
   return solution;
 };
 
@@ -59,35 +58,36 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
-  var size = n;
-  var board = new Board({'n': n});
-
-  // First change findNRootSolution to provide arrays of possibilities
-  // Call findNRootSolution here
-  // Increment solutionCount at each call
+  var board = new Board({n: n});
 
   // Pass in as argument the board
   // create a for loop to check recursively each individual row
 
 
-  var findSolutions = function(n, rowIndex){
-    // for loop iterating over all columsn in row 0
-      // if rowIndex > n
-        // solutionCount++;
-        // break;
+  var findSolutions = function( rowIndex ){
 
-      // get rowIndex row of board
-      // do for loop over row with i
-        // set rook on i
-        // check for conflicts
-          // if conflict, then rowIndex++
-          // if no conflict, recurse
-    //}
+    var row = board.get( rowIndex );
+
+    // Push board when reached last row
+    if( rowIndex === n ){
+      solutionCount++;
+      return;
+    }
+    // Iterate over each box in row
+    for( var i = 0; i < n; i++ ){
+      // Place rook in current box
+      row[i] = 1;
+      // Check if there is any conflict at current location
+      if( !board.hasAnyRooksConflicts() ){
+        // if no conlict, call recursively findSolution until conflict or finished
+        findSolutions( rowIndex+1 );
+      }
+      row[i] = 0;
+    }
+
   };
 
-  // for loop iterating over all columns in row 0
-    // do findSolutions
-
+  findSolutions(0);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
