@@ -96,7 +96,42 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = [];
+  var board = new Board({'n': n});
+  var rowIndex = 0;
+  var size = n;
+
+  // Define the recursive function
+  var assignRook = function(n, rowIndex){
+    if( n === 0 ){
+      return;
+    }
+    var row = board.get(rowIndex);
+
+    for( var col = 0; col < size; col++ ){
+      row[col] = 1;
+      // Check for row & column
+      if ( !board.hasAnyQueensConflicts() ){
+        n--;
+        rowIndex++;
+
+        // recursively call assignRook with n-- and rowIndex++
+        assignRook(n, rowIndex);
+      }
+      if( board.hasAnyRowConflicts() || board.hasAnyColConflicts() ){
+        row[col] = 0;
+      }
+    }
+    // recurse on row++, n--
+    solution.push(row);
+  };
+  // Assign the first position to the rook
+  // Loop through the possible position next rook
+  // Call the recursive function with n - 1
+  // If n === 0 return solution
+
+  assignRook(n, rowIndex);
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
@@ -105,8 +140,33 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var board = new Board({n: n});
 
+  var findSolutions = function( rowIndex ){
+
+    var row = board.get( rowIndex );
+
+    // Push board when reached last row
+    if( rowIndex === n ){
+      solutionCount++;
+      return;
+    }
+    // Iterate over each box in row
+    for( var i = 0; i < n; i++ ){
+      // Place rook in current box
+      row[i] = 1;
+      // Check if there is any conflict at current location
+      if( !board.hasAnyQueensConflicts() ){
+        // if no conlict, call recursively findSolution until conflict or finished
+        findSolutions( rowIndex+1 );
+      }
+      row[i] = 0;
+    }
+
+  };
+
+  findSolutions(0);
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
